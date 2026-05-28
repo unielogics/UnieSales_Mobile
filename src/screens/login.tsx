@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api, ApiError } from '../lib/api';
 import { useAuth } from '../lib/auth';
-import { MIcon } from '../components/primitives';
+import { UnieSalesMark } from '../components/primitives';
 import type { AuthedUser } from '../types';
 
 export function Login() {
@@ -35,19 +35,7 @@ export function Login() {
       style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 28px', minHeight: '100%' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
-        <span
-          style={{
-            width: 46,
-            height: 46,
-            borderRadius: 13,
-            background: 'var(--m-accent-bold)',
-            display: 'grid',
-            placeItems: 'center',
-            color: 'white',
-          }}
-        >
-          <MIcon name="target" size={24} stroke={2.2} />
-        </span>
+        <UnieSalesMark size={46} />
         <div>
           <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em' }}>UnieSales</div>
           <div style={{ fontSize: 13, color: 'var(--m-text-2)' }}>Your sales, in your pocket</div>

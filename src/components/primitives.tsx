@@ -60,6 +60,32 @@ export function MIcon({ name, size = 17, stroke = 1.8 }: { name: IconName; size?
   );
 }
 
+// UnieSales brand mark — purple-gradient square with in/out brackets + AI dot.
+// Same geometry as the desktop logo (UnieSales_Frontend Logo.tsx / icon.svg).
+export function UnieSalesMark({ size = 46 }: { size?: number }) {
+  const id = `us-grad-${size}`;
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block', flexShrink: 0 }}
+    >
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#a78bfa" />
+          <stop offset="1" stopColor="#7c3aed" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="24" height="24" rx="6" fill={`url(#${id})`} />
+      <path d="M9 6.5 L4.8 12 L9 17.5" stroke="white" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M15 6.5 L19.2 12 L15 17.5" stroke="white" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <circle cx={12} cy={12} r={1.7} fill="white" />
+    </svg>
+  );
+}
+
 export type Tone = 'accent' | 'success' | 'warning' | 'danger' | 'info' | 'muted';
 
 export function MPill({ tone, children, dot }: { tone: Tone; children: ReactNode; dot?: boolean }) {
