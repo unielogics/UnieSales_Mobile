@@ -13,6 +13,12 @@ const config: CapacitorConfig = {
     backgroundColor: '#000000',
   },
   plugins: {
+    // Route fetch()/XHR through native HTTP so API calls aren't subject to the
+    // WebView's CORS preflight (api.uniesales.com doesn't allow the
+    // https://localhost app origin, which otherwise fails as "failed to fetch").
+    CapacitorHttp: {
+      enabled: true,
+    },
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert'],
     },

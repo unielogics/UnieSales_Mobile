@@ -5,7 +5,7 @@ export type IconName =
   | 'check' | 'x' | 'chev' | 'chevR' | 'chevL' | 'arrowR' | 'mail' | 'play'
   | 'pause' | 'edit' | 'refresh' | 'target' | 'handoff' | 'alert' | 'archive'
   | 'settings' | 'more' | 'search' | 'flame' | 'table' | 'book' | 'moon'
-  | 'zap' | 'link' | 'trash' | 'logout';
+  | 'zap' | 'link' | 'trash' | 'logout' | 'eye' | 'eyeOff' | 'fingerprint';
 
 const PATHS: Record<IconName, ReactNode> = {
   home: <><path d="M3 11.5 12 4l9 7.5" /><path d="M5 10v10h14V10" /></>,
@@ -41,6 +41,9 @@ const PATHS: Record<IconName, ReactNode> = {
   link: <><path d="M10 14a4 4 0 0 1 0-6l3-3a4 4 0 1 1 6 6l-1.5 1.5" /><path d="M14 10a4 4 0 0 1 0 6l-3 3a4 4 0 1 1-6-6l1.5-1.5" /></>,
   trash: <><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></>,
   logout: <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="M16 17l5-5-5-5M21 12H9" /></>,
+  eye: <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></>,
+  eyeOff: <><path d="M3 3l18 18" /><path d="M10.6 10.6a3 3 0 0 0 4.2 4.2" /><path d="M9.9 5.1A10.6 10.6 0 0 1 12 5c6.5 0 10 7 10 7a18.4 18.4 0 0 1-3.2 4.1M6.1 6.1A18.3 18.3 0 0 0 2 12s3.5 7 10 7a10.6 10.6 0 0 0 3.1-.5" /></>,
+  fingerprint: <><path d="M12 11a2 2 0 0 1 2 2c0 3-1 5-1 5" /><path d="M8 13a4 4 0 0 1 8 0c0 4-1 6-1 6" /><path d="M5 13a7 7 0 0 1 14 0c0 2 0 3-.5 5" /><path d="M9.5 21c.5-1 .5-3 .5-4" /><path d="M12 7a6 6 0 0 1 6 6" /></>,
 };
 
 export function MIcon({ name, size = 17, stroke = 1.8 }: { name: IconName; size?: number; stroke?: number }) {
