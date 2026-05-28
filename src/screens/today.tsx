@@ -214,10 +214,10 @@ export function Today({
             <span>Your AI today</span>
           </div>
           <div className="m-card">
-            <SummaryRow icon="mail" tone="info" count={sentToday} label="Emails sent" sub="across your workspace" />
-            <SummaryRow icon="inbox" tone="accent" count={replied7d} label="Replies (7d)" sub="classified by AI" />
-            <SummaryRow icon="calendar" tone="success" count={todayEvents.length} label="Meetings today" sub={`${tomorrowCount} tomorrow`} />
-            <SummaryRow icon="handoff" tone="warning" count={handoffs} label="Escalated to you" sub="awaiting your call" />
+            <SummaryRow icon="mail" tone="info" count={sentToday} label="Emails sent" sub="across your workspace" onClick={() => onGo(isSales ? 'inbox' : 'campaigns')} />
+            <SummaryRow icon="inbox" tone="accent" count={replied7d} label="Replies (7d)" sub="classified by AI" onClick={() => onGo('inbox')} />
+            <SummaryRow icon="calendar" tone="success" count={todayEvents.length} label="Meetings today" sub={`${tomorrowCount} tomorrow`} onClick={() => onGo('calls')} />
+            <SummaryRow icon="handoff" tone="warning" count={handoffs} label="Escalated to you" sub="awaiting your call" onClick={() => onGo('alerts')} />
           </div>
         </div>
       </PullToRefresh>
@@ -231,15 +231,17 @@ function SummaryRow({
   count,
   label,
   sub,
+  onClick,
 }: {
   icon: 'mail' | 'inbox' | 'calendar' | 'handoff';
   tone: string;
   count: number;
   label: string;
   sub: string;
+  onClick?: () => void;
 }) {
   return (
-    <div className="m-card-row">
+    <div className={onClick ? 'm-card-row tap' : 'm-card-row'} onClick={onClick} role={onClick ? 'button' : undefined}>
       <span
         style={{
           width: 36,
@@ -259,6 +261,11 @@ function SummaryRow({
         <div className="sub">{sub}</div>
       </div>
       <div style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em' }}>{count}</div>
+      {onClick && (
+        <span style={{ color: 'var(--m-text-dim)', display: 'flex', marginLeft: 2 }}>
+          <MIcon name="chevR" size={16} />
+        </span>
+      )}
     </div>
   );
 }
