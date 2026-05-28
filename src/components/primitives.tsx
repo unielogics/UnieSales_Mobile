@@ -105,15 +105,21 @@ export function MTier({ tier }: { tier: Tier }) {
   return <span className="m-tier" data-tier={tier}>{tier}</span>;
 }
 
-export function MAvatar({ name, color }: { name: string | null; color?: string }) {
+export function MAvatar({ name, color, size }: { name: string | null; color?: string; size?: number }) {
   const initials = (name || '?')
     .split(' ')
     .map((s) => s[0])
     .slice(0, 2)
     .join('')
     .toUpperCase();
+  const style = {
+    ...(color ? { background: color } : {}),
+    ...(size
+      ? { width: size, height: size, fontSize: Math.round(size * 0.37), borderRadius: Math.round(size * 0.32) }
+      : {}),
+  };
   return (
-    <span className="m-avatar" style={color ? { background: color } : undefined}>
+    <span className="m-avatar" style={Object.keys(style).length ? style : undefined}>
       {initials}
     </span>
   );

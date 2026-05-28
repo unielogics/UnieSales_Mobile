@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, ApiError } from './api';
 import { useAuth } from './auth';
+import { useWorkspaceStore } from './workspace';
 import type { AppMode } from './mode';
 import type {
   AppNotification,
@@ -38,25 +39,34 @@ export function useWorkspaces() {
   });
 }
 
-const INBOUND_UUID = '00000000-0000-4000-a000-000000000001';
-function isInbound(w: WorkspaceWithRole) {
+export const INBOUND_UUID = '00000000-0000-4000-a000-000000000001';
+export function isInbound(w: WorkspaceWithRole) {
   return w.id === INBOUND_UUID || w.name.trim().toLowerCase() === 'inbound';
+}
+/** Campaign-mode workspaces — everything except the Inbound workspace. */
+export function campaignWorkspaces(list: WorkspaceWithRole[]): WorkspaceWithRole[] {
+  return list.filter((w) => !isInbound(w));
 }
 
 /**
  * Resolve which workspace the given mode operates on.
- *  - sales    → the Inbound workspace (where intake leads land)
- *  - campaign → the first non-Inbound workspace
+ *  - sales    → the Inbound workspace (where intake leads land), single-workspace
+ *  - campaign → the operator's selected workspace, falling back to the first
+ *               campaign workspace. Driven by the WorkspacePill switcher.
  */
 export function useActiveWorkspace(mode: AppMode) {
   const { data: workspaces = [], isLoading } = useWorkspaces();
+  const campaignWid = useWorkspaceStore((s) => s.campaignWid);
   const wid = useMemo(() => {
     if (workspaces.length === 0) return null;
     if (mode === 'sales') {
       return (workspaces.find(isInbound) ?? workspaces[0]).id;
     }
-    return (workspaces.find((w) => !isInbound(w)) ?? workspaces[0]).id;
-  }, [workspaces, mode]);
+    const campaigns = campaignWorkspaces(workspaces);
+    if (campaigns.length === 0) return workspaces[0].id;
+    const selected = campaigns.find((w) => w.id === campaignWid);
+    return (selected ?? campaigns[0]).id;
+  }, [workspaces, mode, campaignWid]);
   const workspace = useMemo(
     () => workspaces.find((w) => w.id === wid) ?? null,
     [workspaces, wid],

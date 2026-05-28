@@ -61,7 +61,13 @@ input, textarea {
 
 /* Hide scrollbars inside the phone */
 .phone-scroll::-webkit-scrollbar { display: none; }
-.phone-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+.phone-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Clear the floating bottom tab bar + home indicator so the last items
+     aren't hidden behind it. This lives on the actual scroller, not .m-screen. */
+  padding-bottom: calc(120px + env(safe-area-inset-bottom));
+}
 
 /* App root fills the device viewport (safe-area aware) */
 .m-app-root {
@@ -76,12 +82,17 @@ input, textarea {
 .m-screen {
   background: var(--m-bg);
   color: var(--m-text);
-  min-height: 100%;
-  padding-bottom: 120px; /* clear bottom tab bar + home indicator */
+  /* Definite height so the inner .phone-scroll (height:100%) resolves and can
+     actually scroll. min-height:100% here grew with content and broke scroll. */
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .m-header {
-  padding: calc(28px + env(safe-area-inset-top)) 20px 12px;
+  /* Top padding clears the floating top-bar row (workspace switcher / profile +
+     mode pill) so the screen title sits cleanly below it. */
+  padding: calc(54px + env(safe-area-inset-top)) 20px 12px;
   position: sticky;
   top: 0;
   background: linear-gradient(180deg, rgba(10,10,12,0.95) 0%, rgba(10,10,12,0.85) 80%, transparent 100%);
@@ -390,7 +401,6 @@ input, textarea {
   display: flex;
   flex-direction: column;
   animation: sheetIn 0.28s cubic-bezier(0.32, 0.72, 0, 1);
-  touch-action: none;
 }
 .m-sheet-handle {
   width: 36px; height: 5px;

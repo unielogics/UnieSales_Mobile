@@ -39,10 +39,6 @@ export function ModePill({ mode, setMode }: { mode: AppMode; setMode: (m: AppMod
     <div
       ref={ref}
       style={{
-        position: 'absolute',
-        top: 'calc(12px + env(safe-area-inset-top))',
-        right: 14,
-        zIndex: 20,
         background: 'rgba(28,28,30,0.78)',
         backdropFilter: 'blur(20px) saturate(180%)',
         WebkitBackdropFilter: 'blur(20px) saturate(180%)',

@@ -8,8 +8,10 @@ import {
   useNotificationCounts,
 } from './lib/hooks';
 import { registerPush, type DeepLink } from './lib/push';
+import { useWorkspaceStore } from './lib/workspace';
 import { dayBucket, MIcon, MAvatar, Spinner } from './components/primitives';
 import { ModePill } from './components/ModePill';
+import { WorkspacePill } from './components/WorkspacePill';
 import { TabBar, type TabDef } from './components/TabBar';
 import { Login } from './screens/login';
 import { Today } from './screens/today';
@@ -33,6 +35,7 @@ export default function App() {
   const mode = useMode((s) => s.mode);
   const setMode = useMode((s) => s.setMode);
   const hydrateMode = useMode((s) => s.hydrate);
+  const hydrateWorkspace = useWorkspaceStore((s) => s.hydrate);
 
   const [tab, setTab] = useState('today');
   const [leadId, setLeadId] = useState<string | null>(null);
@@ -42,7 +45,8 @@ export default function App() {
   useEffect(() => {
     void hydrateAuth();
     void hydrateMode();
-  }, [hydrateAuth, hydrateMode]);
+    void hydrateWorkspace();
+  }, [hydrateAuth, hydrateMode, hydrateWorkspace]);
 
   // Drop on Today whenever the mode flips.
   useEffect(() => setTab('today'), [mode]);
@@ -113,6 +117,14 @@ function Shell({
   const { wid, isLoading } = useActiveWorkspace(mode);
   const isSales = mode === 'sales';
 
+  // Switching workspace (or mode) re-keys every screen's queries to the new
+  // workspace. Close any open lead/thread sheet so a stale record from the
+  // previous workspace can't linger over the newly isolated data.
+  useEffect(() => {
+    setLeadId(null);
+    setThreadId(null);
+  }, [wid, setLeadId, setThreadId]);
+
   // Badge sources (share the react-query cache with the screens).
   const threads = useThreads(wid, mode);
   const cal = useCalendar(wid);
@@ -148,17 +160,31 @@ function Shell({
 
   return (
     <div className="m-app-root">
-      {/* Profile / settings — top-left */}
-      <button
-        onClick={() => setSettingsOpen(true)}
-        className="tap"
-        style={{ position: 'absolute', top: 'calc(12px + env(safe-area-inset-top))', left: 14, zIndex: 20 }}
-        aria-label="Settings"
-      >
-        <MAvatar name={userName} color="rgba(255,255,255,0.12)" />
-      </button>
+      {/* Workspace switcher — top-left, campaign mode only (sales pins to Inbound) */}
+      {!isSales && wid && <WorkspacePill wid={wid} />}
 
-      <ModePill mode={mode} setMode={setMode} />
+      {/* Profile + mode toggle — top-right cluster */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 'calc(12px + env(safe-area-inset-top))',
+          right: 14,
+          zIndex: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <button
+          onClick={() => setSettingsOpen(true)}
+          className="tap"
+          style={{ display: 'flex' }}
+          aria-label="Settings"
+        >
+          <MAvatar name={userName} color="rgba(255,255,255,0.12)" size={32} />
+        </button>
+        <ModePill mode={mode} setMode={setMode} />
+      </div>
 
       <div style={{ height: '100%', overflow: 'hidden' }}>
         {isLoading ? (
