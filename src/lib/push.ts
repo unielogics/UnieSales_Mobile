@@ -25,6 +25,18 @@ export async function registerPush(onDeepLink: (link: DeepLink) => void): Promis
   const perm = await PushNotifications.requestPermissions();
   if (perm.receive !== 'granted') return;
 
+  // High-importance channel so alerts pop as a heads-up banner with sound on the
+  // lock screen — the backend routes every push to this channel id. Idempotent.
+  await PushNotifications.createChannel({
+    id: 'uniesales_alerts',
+    name: 'UnieSales Alerts',
+    description: 'Hot leads, replies, meetings, deals at risk and tasks due',
+    importance: 5, // HIGH — heads-up
+    visibility: 1, // PUBLIC — show on lock screen
+    vibration: true,
+    lights: true,
+  });
+
   await PushNotifications.register();
 
   PushNotifications.addListener('registration', async (token) => {

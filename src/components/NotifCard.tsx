@@ -12,6 +12,8 @@ const KIND_MAP: Record<NotificationKind, { icon: IconName; tone: Tone }> = {
   score: { icon: 'target', tone: 'accent' },
   risk: { icon: 'alert', tone: 'warning' },
   summary: { icon: 'sparkles', tone: 'info' },
+  deal_risk: { icon: 'alert', tone: 'danger' },
+  task: { icon: 'zap', tone: 'warning' },
 };
 
 export function NotifCard({

@@ -25,7 +25,9 @@ const KIND_DEFS: { id: string; label: string; desc: string; urgent?: boolean; di
   { id: 'objection', label: 'Objections', desc: 'Replies flagged as objections needing review' },
   { id: 'score', label: 'Tier changes', desc: 'When a lead moves up or down a tier' },
   { id: 'risk', label: 'Risk alerts', desc: 'Domain health, bounce rate, deliverability', urgent: true },
-  { id: 'summary', label: 'Daily summary', desc: 'End-of-day digest of everything the AI did', digest: true },
+  { id: 'deal_risk', label: 'Deals at risk', desc: 'A deal stalls — next action overdue or no movement in 7 days', urgent: true },
+  { id: 'task', label: 'Tasks due', desc: 'A sales task hits its due time or goes overdue', urgent: true },
+  { id: 'summary', label: 'Daily summary', desc: 'Morning digest of new leads, replies, bookings and wins', digest: true },
 ];
 
 export function Alerts({

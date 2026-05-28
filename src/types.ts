@@ -251,7 +251,8 @@ export interface SalesTask {
 // ─── Notifications (Phase 2 backend; mobile reads these) ───────────────────
 export type NotificationKind =
   | 'handoff' | 'booking' | 'draft' | 'reply' | 'objection'
-  | 'won' | 'lost' | 'score' | 'risk' | 'summary';
+  | 'won' | 'lost' | 'score' | 'risk' | 'summary'
+  | 'deal_risk' | 'task';
 export type NotificationPriority = 'urgent' | 'high' | 'normal' | 'low';
 
 export interface AppNotification {
