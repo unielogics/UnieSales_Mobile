@@ -1,7 +1,8 @@
 import type { ApiEnvelope } from '../types';
 import { getToken, useAuth } from './auth';
 
-const API_BASE = (import.meta.env.VITE_API_BASE as string) || 'https://api.uniesales.com/api';
+// api.uniesales.com's nginx prepends /api upstream, so the base excludes it.
+const API_BASE = (import.meta.env.VITE_API_BASE as string) || 'https://api.uniesales.com';
 
 export class ApiError extends Error {
   readonly errors: { field?: string; reason: string }[];
